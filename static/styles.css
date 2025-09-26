@@ -232,3 +232,16 @@ footer a:hover {
 .footer small a:hover {
   text-decoration: underline;
 }
+
+.bg-light {
+  background-color: #f9f9f9;
+}
+
+.bg-accent {
+  background-color: #eef4ff; /* ejemplo en azul claro */
+}
+
+.bg-primary {
+  background-color: #3e566e; /* azul corporativo fuerte */
+  color: #fff;
+}
