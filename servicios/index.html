@@ -4,32 +4,34 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Automatización útil, paso a paso</title>
-  <link rel="stylesheet" href="static/styles.css" />
+  <link rel="stylesheet" href="../static/styles.css" />
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
   <header class="header">
     <div class="container header-flex">
-      <img src="static/img/logo.png" alt="GO-IS Logo" class="logo" />
-      <p class="intro color-principal">
-        ⚙️ Automatización útil, paso a paso<br>
-        Soluciones personalizadas que se usan de verdad.<br>
-        Diseñadas para encajar en cómo trabaja tu equipo.<br>
-        <span class="resaltado">Escucho, analizo, construyo y acompaño.</span>
-      </p>
+      <img src="../static/img/logo.png" alt="GO-IS Logo" class="logo" />
+      <div class="intro-text">
+        <h1 class="color-principal">Automatiza tus operaciones sin cambiar cómo trabajás</h1>
+        <p class="subheadline">🚀 Más velocidad – 🔍 Más control – 📊 Más trazabilidad – ❌ Menos errores</p>
+        <a href="#contacto" id="cta_top" class="btn-primary">📩 Hablemos de tu caso</a>
+      </div>
     </div>
   </header>
 
   <section class="hero container">
-    <h1>¿Procesos manuales o herramientas sueltas?</h1>
-    <p>Transformalos en soluciones útiles, personalizadas y sostenibles. Desde el primer día.</p>
-    <a href="#servicios" class="btn-primary">Ver ejemplos reales</a>
+    <h1>Automatiza tus procesos con IA útil y sin complicaciones</h1>
+    <p>Agentes, asistentes y sistemas a medida. <br></p>
+    <p>Descarga un caso real de cómo una empresa transformó su captación sin cambiar procesos.</p>
+    <a href="static/pdf/caso_leads.pdf" id="cta_pdf" class="btn-primary" target="_blank">📄 Descargar caso real en PDF</a>
   </section>
 
-  <section class="cta container">
+  <section class="cta container bg-accent">
     <h2>Soluciones reales para tu negocio</h2>
-    <p>Diseño sistemas que automatizan, asisten y te permiten crecer sin perder el control:</p>
+    <p><em>Más de 25 años creando soluciones útiles y sostenibles para empresas.</em><br></p>
+    <p>Desarrollo sistemas que automatizan, asisten y te permiten crecer sin perder el control:</p>
+    <p class="resaltado">La IA no es magia. Es estrategia, diseñada para tu día a día.</p>
     <ul style="list-style: none; padding-left: 0;">
       <li>🤖 Agentes inteligentes (con o sin IA)</li>
       <li>📲 Aplicaciones a medida</li>
@@ -40,7 +42,7 @@
     <a href="#contacto" class="btn-secondary">📩 Hablemos de tu caso</a>
   </section>
 
-  <section id="servicios" class="cards container">
+  <section id="servicios" class="cards cards-servicios container">
     <div class="card">
       <h2>🤖 Agentes Personalizados</h2>
       <p>Agentes que trabajan por ti: onboarding, validación, generación de contenido, seguimiento o control de facturación.</p>
@@ -49,17 +51,17 @@
         <li>📬 Notificaciones según reglas</li>
         <li>🧩 Adaptados a tu forma de trabajar</li>
       </ul>
-      <a href="static/pdf/caso_agentes.pdf" class="btn-primary" target="_blank">📄 Ver caso real</a>
+      <a href="../static/pdf/caso_agentes.pdf" class="btn-primary" target="_blank">📄 Ver caso real</a>
     </div>
     <div class="card">
       <h2>📥 Captación de Leads Multicanal</h2>
-      <p>Unificá WhatsApp, email, llamadas o formularios y automatizá la validación y seguimiento.</p>
+      <p>Centraliza WhatsApp, email, llamadas y formularios, y automatiza la validación y el seguimiento.</p>
       <ul>
         <li>🔗 Captura de todos los canales</li>
         <li>📝 Cuestionario automático</li>
         <li>📊 Seguimiento y trazabilidad</li>
       </ul>
-      <a href="static/pdf/caso_leads.pdf" class="btn-primary" target="_blank">📄 Ver caso real</a>
+      <a href="../static/pdf/caso_leads.pdf" class="btn-primary" target="_blank">📄 Ver caso real</a>
     </div>
     <div class="card">
       <h2>📱 Aplicaciones a Medida</h2>
@@ -69,27 +71,28 @@
         <li>🔍 Control y trazabilidad</li>
         <li>📈 Listas para analítica y automatización</li>
       </ul>
-      <a href="static/pdf/caso_apps.pdf" class="btn-primary" target="_blank">📄 Ver caso real</a>
+      <a href="../static/pdf/caso_apps.pdf" class="btn-primary" target="_blank">📄 Ver caso real</a>
     </div>
   </section>
 
-  <section class="cta container">
+  <section class="timeline container">
     <h2>¿Cómo trabajo?</h2>
-    <p>Un enfoque claro, centrado en vos y en el valor desde el primer día:</p>
-    <ul style="list-style: none; padding-left: 0;">
-      <li>🧠 Escuchar: entender tu contexto y cómo trabajás</li>
-      <li>🔍 Analizar: detectar oportunidades reales</li>
-      <li>🛠️ Construir: soluciones a medida, sin cajas negras</li>
-      <li>👣 Acompañar: asegurar que se usa y aporta valor</li>
-    </ul>
+    <div class="timeline-steps">
+      <div class="step">🧠 Escucho</div>
+      <div class="step">🔍 Analizo</div>
+      <div class="step">🛠️ Construyo</div>
+      <div class="step">👣 Acompaño</div>
+    </div>
   </section>
 
-  <section id="contacto" class="cta container">
-    <h2>¿Y si lo aplicamos en tu negocio?</h2>
-    <p>Automatizá tus procesos con soluciones útiles, trazables y hechas a medida.</p>
+  <section id="contacto" class="hero container">
+    <h2>¿Lo aplicamos en tu negocio?</h2>
+    <p>Soluciones útiles, trazables y hechas a medida.<br>
+    Con IA cuando aporta valor, pero siempre sin cajas negras ni humo.</p>
     <div class="cta-buttons">
-      <a href="mailto:antonio.justicia@go-is.es" class="btn-secondary">📩 Escribime</a>
-      <a href="https://calendly.com/antonio-justicia-go-is/30min" class="btn-primary">📅 Agendá una llamada</a>
+      <a href="mailto:antonio.justicia@go-is.es" id="cta_email" class="btn-secondary">📩 Escribime por email</a>
+      <a href="https://calendly.com/antonio-justicia-go-is/30min" id="cta_call" class="btn-primary" target="_blank">📅 Agenda una llamada</a>
+      <a href="https://wa.me/34669834931" id="cta_whatsapp" class="btn-secondary" target="_blank">💬 Escríbeme por WhatsApp</a>
     </div>
   </section>
 
