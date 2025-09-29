@@ -59,12 +59,6 @@ body {
   text-align: center;
 }
 
-.intro-text {
-  text-align: center;
-  max-width: 640px;
-  margin: 0 auto;
-}
-
 .hero {
   text-align: center;
   padding: 2rem 1rem;
@@ -152,12 +146,6 @@ body {
   color: #4a5568;
 }
 
-.cta ul {
-  list-style: none;
-  padding-left: 0;
-  text-align: center;
-}
-
 .cta ul li {
   margin-bottom: 0.5rem;
   font-size: 1rem;
@@ -199,9 +187,6 @@ footer a:hover {
 
 @media (min-width: 768px) {
   .cards {
-    grid-template-columns: repeat(4, 1fr);
-  }
-  .cards-servicios {
     grid-template-columns: repeat(3, 1fr);
   }
   .cta-buttons {
@@ -230,25 +215,6 @@ footer a:hover {
   box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 
-.timeline-steps {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 1rem;
-  margin-top: 2rem;
-}
-
-.timeline-steps .step {
-  flex: 1 1 150px;
-  background: var(--color-white);
-  border-radius: 8px;
-  padding: 1rem;
-  text-align: center;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  font-weight: 600;
-  color: var(--color-primary);
-}
-
 .color-principal {
   color: var(--color-primary);
 }
@@ -272,34 +238,10 @@ footer a:hover {
 }
 
 .bg-accent {
-  background-color: #eef4ff;
+  background-color: #eef4ff; /* ejemplo en azul claro */
 }
 
 .bg-primary {
-  background-color: #3e566e;
+  background-color: #3e566e; /* azul corporativo fuerte */
   color: #fff;
 }
-
-.subheadline {
-  font-size: 1.1rem;
-  font-weight: 500;
-  color: #4a5568;
-  margin: 1rem 0 1.5rem 0;
-  text-align: center;
-}
-
-.timeline.container {
-  background-color: var(--color-bg);
-  border-radius: 12px;
-  padding: 3rem 1rem;
-  text-align: center;
-  margin-top: 3rem;
-}
-
-.timeline.container h2 {
-  font-size: 1.8rem;
-  color: var(--color-primary);
-  margin-bottom: 1.5rem;
-}
-
-
