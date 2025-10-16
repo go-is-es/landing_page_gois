@@ -15,6 +15,18 @@
     gtag('js', new Date());
     gtag('config', 'AW-17610716927');
   </script>
+  <!-- Evento personalizado: lead_real -->
+  <script>
+    function registrarLeadReal(origen) {
+      gtag('event', 'conversion', {
+        'send_to': 'AW-17610716927/lead_real',
+        'event_category': 'lead',
+        'event_label': origen,
+        'value': 1.0,
+        'currency': 'EUR'
+      });
+    }
+  </script>
 </head>
 <body>
   <header class="header">
@@ -81,21 +93,21 @@
       <a href="mailto:antonio.justicia@go-is.es" 
         id="cta_email" 
         class="btn-secondary"
-        onclick="gtag('event', 'conversion', {'send_to': 'AW-17610716927/Sn2bCJz5_qMbEP_tuM1B'});">
+        onclick="registrarLeadReal('email');">
         📩 Escribime por email
       </a>
       <a href="https://calendly.com/antonio-justicia-go-is/30min" 
         id="cta_call" 
         class="btn-primary" 
         target="_blank"
-        onclick="gtag('event', 'conversion', {'send_to': 'AW-17610716927/Sn2bCJz5_qMbEP_tuM1B'});">
+        onclick="registrarLeadReal('calendly');">
         📅 Agenda una llamada
       </a>
       <a href="https://wa.me/34669834931" 
         id="cta_whatsapp" 
         class="btn-secondary" 
         target="_blank"
-        onclick="gtag('event', 'conversion', {'send_to': 'AW-17610716927/Sn2bCJz5_qMbEP_tuM1B'});">
+        onclick="registrarLeadReal('whatsapp');">
         💬 Escríbeme por WhatsApp
       </a>
     </div>
