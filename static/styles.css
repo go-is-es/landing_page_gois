@@ -310,3 +310,49 @@ footer a:hover {
   box-sizing: border-box;
   white-space: normal;     /* permite salto de línea limpio */
 }
+
+/* --- Fix responsive header & text mobile --- */
+@media (max-width: 480px) {
+
+  .header-flex {
+    flex-direction: column;
+    text-align: center;
+    gap: 12px;
+  }
+
+  .header .logo {
+    max-width: 140px;
+    margin: 0 auto 8px auto;
+  }
+
+  .intro-text h1 {
+    font-size: 22px;
+    line-height: 1.25;
+    padding: 0 10px;
+  }
+
+  .intro-text .subheadline {
+    font-size: 14px;
+    line-height: 1.35;
+    padding: 0 12px;
+  }
+
+  #cta_top {
+    display: block;
+    width: 100%;
+    max-width: 350px;
+    margin: 0 auto;
+    font-size: 15px;
+    padding: 12px 14px;
+    white-space: normal;
+  }
+
+  /* Ajuste general: menos ruido visual en móvil */
+  .cards .card p,
+  .hero p,
+  .cta ul li,
+  .timeline .step {
+    font-size: 15px;
+    line-height: 1.35;
+  }
+}
