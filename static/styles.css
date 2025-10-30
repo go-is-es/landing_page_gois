@@ -303,12 +303,10 @@ footer a:hover {
 }
 
 .fullwidth {
-  display: inline-block;
+  display: block;          /* fuerza el botón a ocupar toda la fila */
   width: 100%;
   text-align: center;
   padding: 14px 18px;
   box-sizing: border-box;
-  white-space: normal; /* permite salto limpio de línea */
+  white-space: normal;     /* permite salto de línea limpio */
 }
-
-
