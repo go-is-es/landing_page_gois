@@ -35,7 +35,12 @@
       <div class="intro-text">
         <h1 class="color-principal">Automatiza tus operaciones sin cambiar cómo trabajás</h1>
         <p class="subheadline">🚀 Más velocidad – 🔍 Más control – 📊 Más trazabilidad – ❌ Menos errores</p>
-        <a href="#contacto" id="cta_top" class="btn-primary">📩 Hablemos de tu caso</a>
+        <a href="#contacto" 
+          id="cta_top" 
+          class="btn-primary"
+          onclick="registrarLeadReal('cta_scroll');">
+          🚀 Ideas para automatizar tu negocio
+        </a>
       </div>
     </div>
   </header>
@@ -64,6 +69,17 @@
       <p>Conecta tus sistemas y elimina tareas manuales, mejorando la trazabilidad y el control.</p>
     </div>
   </section>
+
+  <div class="container" style="text-align:center; margin:30px 0;">
+    <a href="#contacto" 
+      class="btn-primary"
+      onclick="registrarLeadReal('cta_mid');">
+      📎 Quiero ver casos reales similares al mío
+    </a>
+    <p style="font-size:14px;color:#555;margin-top:12px; line-height:1.4;">
+      Respuesta en menos de 24h — Sin compromiso
+    </p>
+  </div>
 
   <section class="cta container bg-accent">
     <h2>Un caso real: captación automática sin fricción</h2>
@@ -94,23 +110,26 @@
         id="cta_email" 
         class="btn-secondary"
         onclick="registrarLeadReal('email');">
-        📩 Escribime por email
+        📩 Envíame tu caso y te doy ideas
       </a>
       <a href="https://calendly.com/antonio-justicia-go-is/30min" 
         id="cta_call" 
         class="btn-primary" 
         target="_blank"
         onclick="registrarLeadReal('calendly');">
-        📅 Agenda una llamada
+        📞 Quiero hablar con un experto
       </a>
       <a href="https://wa.me/34669834931" 
         id="cta_whatsapp" 
         class="btn-secondary" 
         target="_blank"
         onclick="registrarLeadReal('whatsapp');">
-        💬 Escríbeme por WhatsApp
+        💬 Hablemos ahora por WhatsApp
       </a>
     </div>
+    <p style="margin-top:10px;font-size:13px;color:#555;">
+      Sin compromiso — Respuesta en menos de 24h
+    </p>
   </section>
 
   <footer class="footer">
@@ -119,7 +138,7 @@
         &copy; <span id="year"></span> Go-Is | 
         <a href="https://www.linkedin.com/in/antonio-justicia-bigdata-datascience/" target="_blank">LinkedIn</a> | 
         <a href="https://www.go-is.es" target="_blank">www.go-is.es</a> | 
-        <a href="/legal" target="_blank">Legal + RGPD</a>
+        <a href="https://go-is.es/politica-de-privacidad/" target="_blank">Política de Privacidad</a>
       </small>
     </div>
   </footer>
