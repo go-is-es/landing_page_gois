@@ -302,4 +302,13 @@ footer a:hover {
   margin-bottom: 1.5rem;
 }
 
+.fullwidth {
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+  padding: 14px 18px;
+  box-sizing: border-box;
+  white-space: normal; /* permite salto limpio de línea */
+}
+
 
