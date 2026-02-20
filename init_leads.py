@@ -31,12 +31,17 @@ from dotenv import load_dotenv
 load_dotenv()
 API_KEY = os.getenv("GOOGLE_PLACES_API_KEY", "").strip()
 
-# ⚠️ Rellena tus consultas aquí (sector + ubicación)
+# ⚙️ Nueva lista de keywords (zona sur y sectores concretos)
 QUERIES = [
-    "empresa de mantenimiento Madrid",
-    "consultoría de procesos Madrid",
-    "servicios industriales Getafe",
+    "empresa servicios industriales Móstoles",
+    "empresa de mantenimiento Fuenlabrada",
+    "asesoría empresas Leganés",
+    "servicios logísticos Getafe",
+    "empresa de instalaciones Alcorcón",
 ]
+
+# ⚙️ Nuevo límite por query (para controlar coste y tiempo)
+LIMIT_RESULTS = 20  # puedes subir a 30 si lo necesitas
 
 # Máximo de resultados por query (Places devuelve 20 por página; con paginación)
 MAX_RESULTS_PER_QUERY = 100
@@ -217,7 +222,8 @@ def main():
 
     for q in QUERIES:
         logging.info("🔎 Buscando: %s", q)
-        items = places_text_search(q, API_KEY)
+        # items = places_text_search(q, API_KEY)
+        items = places_text_search(q, API_KEY)[:LIMIT_RESULTS]
         logging.info("   → %d candidatos encontrados", len(items))
 
         for it in items:
@@ -320,7 +326,7 @@ def main():
     # (si quieres solo corporativos, descomenta la línea siguiente)
     # df = df[(df["email_tipo"] == "corporativo") | (df["email"] == "")]
 
-    out_file = "leads.xlsx"
+    out_file = "leads_locales.xlsx"
     df.to_excel(out_file, index=False)
     logging.info("✅ Exportado: %s (filas: %d)", out_file, len(df))
 
