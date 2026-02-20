@@ -13,3 +13,5 @@ https://landing-leads.go-is.es/servicios/
 
 # PARA SUBIR A MAIN
 git checkout main && git pull origin main && git merge development && git push origin main && git checkout development
+
+git checkout development
