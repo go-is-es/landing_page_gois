@@ -31,23 +31,31 @@ from dotenv import load_dotenv
 load_dotenv()
 API_KEY = os.getenv("GOOGLE_PLACES_API_KEY", "").strip()
 
-# ⚙️ Nueva lista de keywords (zona sur y sectores concretos)
 QUERIES = [
-    "empresa servicios industriales Móstoles",
-    "empresa de mantenimiento Fuenlabrada",
-    "asesoría empresas Leganés",
-    "servicios logísticos Getafe",
-    "empresa de instalaciones Alcorcón",
+    # Marketing / leads
+    "agencia marketing digital España",
+    "empresa generación leads B2B España",
+    "consultora marketing digital España",
+
+    # Servicios B2B (muy buenos)
+    "consultoría empresarial España",
+    "servicios para empresas España",
+    "empresa servicios B2B España",
+
+    # # Verticales con dolor claro
+    # "inmobiliaria alquiler España",
+    # "centro formación España",
+    # "empresa formación online España",
 ]
 
 # ⚙️ Nuevo límite por query (para controlar coste y tiempo)
-LIMIT_RESULTS = 20  # puedes subir a 30 si lo necesitas
+LIMIT_RESULTS = 10  # puedes subir a 30 si lo necesitas
 
 # Máximo de resultados por query (Places devuelve 20 por página; con paginación)
-MAX_RESULTS_PER_QUERY = 100
+MAX_RESULTS_PER_QUERY = 20
 
 # Timeout y headers para scraping web
-REQ_TIMEOUT = 12
+REQ_TIMEOUT = 5
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (compatible; GO-IS-lead-scraper/1.0; +https://landing-leads.go-is.es/)"
 }
@@ -93,7 +101,7 @@ def clean_phone(phone: str) -> str:
         return ""
     return re.sub(r"[^\d+]", "", phone)
 
-def polite_sleep(a=0.7, b=1.6):
+def polite_sleep(a=0.2, b=0.5):
     time.sleep(random.uniform(a, b))
 
 def fetch_url(url: str) -> str:
@@ -127,7 +135,7 @@ def find_candidate_pages(base_url: str) -> list:
         u = urljoin(base_url if base_url.endswith("/") else base_url + "/", p)
         if u not in unique_urls:
             unique_urls.append(u)
-    return unique_urls[:5]  # límite de seguridad
+    return unique_urls[:2]  # límite de seguridad
 
 def normalize_website(url: str) -> str:
     if not url:
@@ -142,20 +150,22 @@ def normalize_website(url: str) -> str:
 
 def score_lead(row: dict) -> float:
     score = 0.0
-    # +0.3 si hay web
+
     if row.get("web"):
-        score += 0.3
-    # +0.3 si hay email corporativo
+        score += 0.2
+
     if classify_email(row.get("email", "")) == "corporativo":
-        score += 0.3
-    # +0.2 si hay teléfono
+        score += 0.2
+
     if row.get("telefono"):
         score += 0.2
-    # +0.2 si tiene ciudad/categoría
-    if row.get("ciudad"):
-        score += 0.1
+
+    if row.get("reviews", 0) > 10:
+        score += 0.2
+
     if row.get("categoria"):
-        score += 0.1
+        score += 0.2
+
     return round(min(score, 1.0), 2)
 
 # -----------------------------
@@ -182,7 +192,7 @@ def places_text_search(query: str, api_key: str):
         results.extend(data.get("results", []))
         next_token = data.get("next_page_token")
         page_count += 1
-        if not next_token or len(results) >= MAX_RESULTS_PER_QUERY or page_count >= 3:
+        if not next_token or len(results) >= MAX_RESULTS_PER_QUERY or page_count >= 2:
             break
         # Next page necesita esperar unos segundos
         polite_sleep(2.2, 3.1)
@@ -227,12 +237,17 @@ def main():
         logging.info("   → %d candidatos encontrados", len(items))
 
         for it in items:
+            reviews = it.get("user_ratings_total", 0)
+            if reviews < 5:
+                continue
+
             place_id = it.get("place_id")
             if not place_id or place_id in seen_places:
                 continue
             seen_places.add(place_id)
 
             polite_sleep()
+
             details = place_details(place_id, API_KEY)
             if not details:
                 continue
@@ -242,6 +257,8 @@ def main():
             phone = clean_phone(details.get("formatted_phone_number", ""))
             website_raw = details.get("website", "")
             website = normalize_website(website_raw) if website_raw else ""
+            if not website:
+                continue
 
             city = address_component(details, "locality") or address_component(details, "postal_town")
             admin_area = address_component(details, "administrative_area_level_2")
@@ -256,7 +273,7 @@ def main():
 
             if website:
                 # Evita duplicar por dominio
-                domain = tldextract.extract(website).registered_domain
+                domain = tldextract.extract(website).top_domain_under_public_suffix
                 if domain and domain in seen_domains:
                     pass
                 else:
@@ -264,7 +281,7 @@ def main():
                         seen_domains.add(domain)
                     emails = set()
                     for page_url in find_candidate_pages(website):
-                        polite_sleep(0.6, 1.0)
+                        polite_sleep(0.2, 0.5)
                         html = fetch_url(page_url)
                         if not html:
                             continue
@@ -306,6 +323,7 @@ def main():
                 "pais": country,
                 "categoria": categoria,
                 "fuente": fuente,
+                "reviews": reviews,
                 "query": q,
                 "fecha_extraccion": pd.Timestamp.utcnow().strftime("%Y-%m-%d"),
             }
@@ -322,9 +340,8 @@ def main():
     df.sort_values(["score_inicial", "email_tipo"], ascending=[False, True], inplace=True)
     df.drop_duplicates(subset=["empresa", "web"], inplace=True)
 
-    # Filtro: mantener emails corporativos o vacíos (para que puedas buscar luego)
-    # (si quieres solo corporativos, descomenta la línea siguiente)
-    # df = df[(df["email_tipo"] == "corporativo") | (df["email"] == "")]
+    # 🔥 FILTRO DE CALIDAD
+    df = df[df["score_inicial"] >= 0.5]
 
     out_file = "leads_locales.xlsx"
     df.to_excel(out_file, index=False)
