@@ -24,6 +24,7 @@ import pandas as pd
 from bs4 import BeautifulSoup
 import tldextract
 from dotenv import load_dotenv
+from datetime import datetime
 
 # -----------------------------
 # Configuración
@@ -32,20 +33,24 @@ load_dotenv()
 API_KEY = os.getenv("GOOGLE_PLACES_API_KEY", "").strip()
 
 QUERIES = [
-    # Marketing / leads
+    # 🔥 AGENCIAS (top prioridad)
     "agencia marketing digital España",
-    "empresa generación leads B2B España",
-    "consultora marketing digital España",
+    "agencia publicidad España",
+    "agencia desarrollo web España",
 
-    # Servicios B2B (muy buenos)
+    # 🔥 CONSULTORAS
+    "consultoría recursos humanos España",
     "consultoría empresarial España",
-    "servicios para empresas España",
-    "empresa servicios B2B España",
+    "consultora transformación digital España",
 
-    # # Verticales con dolor claro
-    # "inmobiliaria alquiler España",
-    # "centro formación España",
-    # "empresa formación online España",
+    # 🔥 INMOBILIARIAS (clave)
+    "inmobiliaria Madrid alquiler",
+    "inmobiliaria Barcelona alquiler",
+    "grupo inmobiliario España",
+
+    # 🔥 B2B con leads
+    "empresa servicios B2B España",
+    "empresa soluciones digitales empresas España",
 ]
 
 # ⚙️ Nuevo límite por query (para controlar coste y tiempo)
@@ -264,6 +269,8 @@ def main():
             admin_area = address_component(details, "administrative_area_level_2")
             country = address_component(details, "country")
             types = details.get("types", [])
+            if not any(t in types for t in ["point_of_interest", "establishment"]):
+                continue
             categoria = ", ".join(types) if types else ""
 
             # Extraer emails desde la web (si existe)
@@ -321,9 +328,9 @@ def main():
                 "ciudad": city,
                 "provincia": admin_area,
                 "pais": country,
-                "categoria": categoria,
-                "fuente": fuente,
-                "reviews": reviews,
+                # "categoria": categoria,
+                # "fuente": fuente,
+                # "reviews": reviews,
                 "query": q,
                 "fecha_extraccion": pd.Timestamp.utcnow().strftime("%Y-%m-%d"),
             }
@@ -343,7 +350,11 @@ def main():
     # 🔥 FILTRO DE CALIDAD
     df = df[df["score_inicial"] >= 0.5]
 
-    out_file = "leads_locales.xlsx"
+    
+    # Poner la fecha al fichero a descargar
+    fecha = datetime.now().strftime("%d%m%Y")
+    out_file = f"leads_locales_{fecha}.xlsx"
+    
     df.to_excel(out_file, index=False)
     logging.info("✅ Exportado: %s (filas: %d)", out_file, len(df))
 
