@@ -302,3 +302,282 @@ body {
   }
 
 }
+
+
+/* CTA secundario más suave */
+.btn-ghost {
+  display: inline-block;
+  padding: 0.7rem 1.4rem;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #666;
+  border: 1.5px solid #ccc;
+  border-radius: 6px;
+  text-decoration: none;
+  background-color: transparent;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-ghost:hover {
+  background-color: #f5f5f5;
+  color: #111;
+  border-color: #999;
+}
+
+/* =========================
+   HERO DIAGNÓSTICO
+========================= */
+
+.hero-diagnostico {
+  padding: 30px 0;
+  border-bottom: 1px solid #eee;
+  background-color: #eef2f7;
+}
+
+/* 🔑 Forzamos layout horizontal */
+.hero-flex {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1.5rem;
+}
+
+/* Evita que el logo se deforme o baje */
+.hero-logo {
+  flex-shrink: 0;
+}
+
+.hero-logo img {
+  height: 45px;
+  width: auto;
+  display: block;
+}
+
+/* Contenido texto */
+.hero-content {
+  max-width: 600px;
+}
+
+.hero-content h1 {
+  margin: 0;
+  font-size: 1.6rem;
+  line-height: 1.2;
+}
+
+.hero-content p {
+  margin-top: 0.4rem;
+  color: #555;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 768px) {
+  .hero-flex {
+    flex-direction: column !important;
+    align-items: center;
+    text-align: center;
+  }
+
+  .hero-logo img {
+    height: 40px;
+    margin-bottom: 0.5rem;
+  }
+
+  .hero-content h1 {
+    font-size: 1.4rem;
+  }
+
+  .hero-content p {
+    font-size: 0.95rem;
+  }
+}
+
+.form-intro {
+  max-width: 700px;
+  margin: 0 auto 20px auto;
+  text-align: center;
+  font-size: 0.95rem;
+  color: #555;
+}
+
+/* =========================
+   HERO DIAGNÓSTICO LAYOUT
+========================= */
+.hero-diagnostico {
+  padding: 40px 0 30px;
+  border-bottom: 1px solid #eee;
+}
+
+.hero-diagnostico-top {
+  align-items: center;
+  gap: 2rem;
+}
+
+.hero-diagnostico .logo {
+  height: 42px;
+  width: auto;
+  display: block;
+}
+
+.hero-content {
+  max-width: 650px;
+  text-align: center; 
+  margin: 0 auto;  
+}
+
+.hero-content h1 {
+  margin: 0 0 0.8rem 0;
+  font-size: 1.8rem;
+  line-height: 1.2;
+}
+
+.hero-benefits {
+  margin-top: 0.2rem;
+}
+
+.benefit {
+  display: block;
+  margin: 0.35rem 0;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.b1 {
+  background-color: #e8f0fe;
+  color: #1a73e8;
+}
+
+.b2 {
+  background-color: #e6f4ea;
+  color: #137333;
+}
+
+.b3 {
+  background-color: #fef7e0;
+  color: #b06000;
+}
+
+@media (max-width: 768px) {
+  .hero-diagnostico-top {
+    flex-direction: column;
+    align-items: center; 
+    text-align: center;
+    gap: 1rem;
+  }
+
+  .hero-content h1 {
+    font-size: 1.5rem;
+  }
+
+  .benefit {
+    font-size: 0.92rem;
+  }
+}
+
+/* contenedor de inputs */
+.form-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* inputs alineados con el resto */
+.form-fields input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #eee;
+  background: #fff;
+  transition: 0.2s;
+}
+
+.form-fields input:focus {
+  border-color: #999;
+  outline: none;
+}
+/* =========================
+   FORMULARIO
+========================= */
+.form-intro-top {
+  max-width: 700px;
+  margin: 0 auto;
+  text-align: center;   /* 🔑 centra todo */
+}
+
+.form-main {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* cards */
+.form-card {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #eee;
+  margin-bottom: 20px;
+}
+
+/* títulos */
+.form-card h2 {
+  margin-bottom: 15px;
+  font-size: 1.3rem;
+}
+
+/* opciones */
+.option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #eee;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.option:hover {
+  background: #f9f9f9;
+  border-color: #ccc;
+}
+
+.option input {
+  transform: scale(1.2);
+}
+
+/* textarea */
+textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+/* input email */
+input[type="email"] {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+}
+
+/* legal */
+.checkbox-legal {
+  display: flex;
+  gap: 8px;
+  margin: 10px 0;
+}
+
+.form-help {
+  font-size: 0.7rem;
+  color: #999;
+  opacity: 0.75;
+}
