@@ -1,0 +1,256 @@
+/* =========================
+   DIAGNOSTICO - SOLO ESTA PLANTILLA
+========================= */
+
+.hero-diagnostico {
+  padding: 40px 0 30px;
+  border-bottom: 1px solid #dbe6ef;
+  background: linear-gradient(180deg, #eef4ff 0%, #f7fbff 100%);
+}
+
+.hero-diagnostico-top {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.hero-diagnostico .logo {
+  height: 46px;
+  width: auto;
+  display: block;
+}
+
+.hero-content {
+  max-width: 680px;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.hero-content h1 {
+  margin: 0 0 10px 0;
+  font-size: 2rem;
+  line-height: 1.15;
+  color: var(--color-dark);
+  font-family: 'Montserrat', sans-serif;
+}
+
+.hero-content h4 {
+  margin: 0;
+  font-size: 1.02rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #52606d;
+}
+
+/* CONTENEDOR GENERAL */
+.form-main {
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+/* BLOQUES NARRATIVOS */
+.lead-section {
+  margin: 24px 0;
+  padding: 22px 24px;
+  background: #ffffff;
+  border: 1px solid #e6edf5;
+  border-radius: 14px;
+  box-shadow: 0 8px 24px rgba(31, 41, 55, 0.04);
+}
+
+.lead-section:nth-of-type(even) {
+  background: #f9fbfe;
+}
+
+.lead-question {
+  margin: 0 0 12px 0;
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+.lead-section p {
+  margin-top: 0;
+  margin-bottom: 12px;
+  max-width: none;
+}
+
+.lead-section ul {
+  margin: 0;
+  padding-left: 0;
+}
+
+.lead-section ul li {
+  margin-bottom: 0.9rem;
+  padding-left: 1.25rem;
+  font-size: 1.02rem;
+}
+
+.lead-note {
+  margin-top: 14px;
+  font-size: 0.95rem;
+  color: #5c6b78;
+}
+
+.no-humo {
+  font-weight: 600;
+  color: var(--color-dark);
+}
+
+/* BLOQUE CLAVE */
+.lead-highlight {
+  margin: 28px 0;
+  padding: 22px 24px;
+  border-radius: 14px;
+  background: linear-gradient(90deg, rgba(61,140,204,0.12), rgba(155,190,84,0.10));
+  border: 1px solid rgba(61,140,204,0.16);
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--color-dark);
+  box-shadow: 0 10px 24px rgba(61,140,204,0.08);
+}
+
+/* CTA */
+.lead-cta {
+  margin: 30px 0;
+  padding: 24px;
+  border-radius: 14px;
+  text-align: center;
+  background: linear-gradient(135deg, rgba(61,140,204,0.14), rgba(155,190,84,0.14));
+  border: 1px solid rgba(61,140,204,0.18);
+  box-shadow: 0 10px 24px rgba(31, 41, 55, 0.05);
+}
+
+.lead-cta p {
+  margin: 0;
+  max-width: none;
+}
+
+.lead-cta .small {
+  margin-top: 8px;
+  font-size: 0.95rem;
+  color: #5f6c78;
+}
+
+/* FORM FINAL */
+.form-final {
+  max-width: 520px;
+  margin: 34px auto 0 auto;
+  padding: 30px 28px;
+  background: #ffffff;
+  border: 1px solid #dfe7ef;
+  border-radius: 16px;
+  box-shadow: 0 14px 36px rgba(31, 41, 55, 0.08);
+}
+
+.form-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.form-header h2 {
+  margin: 0 0 6px 0;
+  font-size: 1.6rem;
+  color: var(--color-primary);
+}
+
+.form-header p {
+  margin: 0;
+  font-size: 0.96rem;
+  color: #607080;
+  max-width: none;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.form-group input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 14px 16px;
+  border-radius: 10px;
+  border: 1px solid #cfd8e3;
+  background: #ffffff;
+  color: var(--color-dark);
+  font-size: 0.95rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-group input::placeholder {
+  color: #8c99a5;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(61,140,204,0.14);
+}
+
+/* CHECKBOX */
+.checkbox-legal {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 12px 0 18px 0;
+}
+
+.checkbox-legal input {
+  flex-shrink: 0;
+  margin: 0;
+}
+
+.checkbox-legal span {
+  line-height: 1.35;
+  color: #5d6b78;
+  font-size: 0.92rem;
+}
+
+/* BOTON SOLO DE ESTA PLANTILLA */
+.form-final .btn-primary {
+  width: 100%;
+  border: none;
+  padding: 15px 18px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.98rem;
+  cursor: pointer;
+  box-shadow: 0 10px 22px rgba(61,140,204,0.18);
+}
+
+.form-final .btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 28px rgba(61,140,204,0.22);
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .hero-diagnostico-top {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .hero-content h1 {
+    font-size: 1.6rem;
+  }
+
+  .hero-content h4 {
+    font-size: 0.95rem;
+  }
+
+  .lead-section,
+  .lead-highlight,
+  .lead-cta,
+  .form-final {
+    padding: 18px;
+  }
+
+  .form-final {
+    max-width: 100%;
+  }
+}

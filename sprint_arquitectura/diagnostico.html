@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diagnóstico Operativo</title>
+
+  <link rel="stylesheet" href="../static/styles_sprint.css">
+  <link rel="stylesheet" href="../static/styles_diagnostico.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero-diagnostico">
+  <div class="container">
+    <div class="header-flex hero-diagnostico-top">
+
+      <a href="index.html">
+        <img src="../static/img/logo.png" alt="Logo" class="logo">
+      </a>
+      <div class="hero-content">
+        <h1>
+          La IA no está fallando en tu empresa.<br>
+          Está fallando cómo estás operando.
+        </h1>
+
+        <h4>
+          En menos de 1 minuto sabrás por qué y por dónde empezar a arreglarlo
+        </h4>
+    </div>
+  </div>
+</section>
+
+<!-- FORMULARIO -->
+<section class="section bg-light">
+  <div class="container">
+
+    <form id="lead-form" class="form-main">
+
+      <!-- BLOQUE INTRO -->
+      <div class="lead-section">
+       <div class="lead-highlight">
+          ¿Tu empresa está realmente preparada para aprovechar la IA…
+          o solo estás probando cosas sin impacto real?
+        </p>
+      </div>
+
+      <!-- BLOQUE PROBLEMA -->
+      <div class="lead-section">
+        <p class="lead-question">¿Te suena esto?</p>
+        <ul>
+          <li>Dependes de Excel para cosas críticas</li>
+          <li>Información repartida en varios sitios</li>
+          <li>No sabes qué dato es el correcto</li>
+        </ul>
+      </div>
+
+      <!-- BLOQUE TENSIÓN -->
+      <div class="lead-section">
+        <p>Si has pensado “sí” en alguna…</p>
+        <ul>
+          <li>¿Cuánto tiempo pierde tu equipo buscando información?</li>
+          <li>¿Cuántas tareas repetitivas seguís haciendo manualmente?</li>
+          <li>¿Cuántos sistemas no se hablan entre sí?</li>
+          <li>¿Dependes demasiado de personas clave?</li>
+        </ul>
+      </div>
+
+      <!-- BLOQUE CLAVE -->
+      <div class="lead-highlight">
+        Tu problema no es la IA.<br>
+        Es la estructura.
+      </div>
+
+      <!-- BLOQUE IA -->
+      <div class="lead-section">
+        <p class="lead-question">Aunque ya hayas probado IA…</p>
+        <ul>
+          <li>¿Está integrada en tu operativa diaria?</li>
+          <li>¿Automatiza procesos clave o solo son pruebas?</li>
+        </ul>
+
+        <p class="lead-note">
+          Si no hay sistema → no hay impacto
+        </p>
+      </div>
+
+      <!-- BLOQUE IMPACTO -->
+      <div class="lead-section">
+        <p>Esto se traduce en:</p>
+        <ul>
+          <li>Tiempo perdido</li>
+          <li>Errores evitables</li>
+          <li>Procesos lentos</li>
+          <li>Crecimiento bloqueado</li>
+        </ul>
+      </div>
+
+      <!-- BLOQUE PREGUNTA -->
+      <div class="lead-section">
+        <div class="lead-highlight">
+          Si pudieras eliminar cuellos de botella y tener control real…
+        </p>
+        <p><strong>¿Lo harías?</strong></p>
+      </div>
+
+      <!-- BLOQUE PROPUESTA -->
+      <div class="lead-section">
+        <p>👉 Entonces tiene sentido esto:</p>
+        <ul>
+          <li>Qué está fallando</li>
+          <li>Dónde estás perdiendo dinero</li>
+          <li>Qué automatizar primero</li>
+        </ul>
+
+        <p class="no-humo">Sin teoría. Sin humo.</p>
+      </div>
+
+      <!-- CTA -->
+      <div class="lead-cta">
+        <p>⚡ Agenda una reunión y llévate tu diagnóstico</p>
+        <p class="small">
+          No es una demo. No es venta agresiva. Es claridad sobre tu negocio.
+        </p>
+      </div>
+
+      <!-- FORM FINAL -->
+      <div class="form-card form-final">
+      <div class="form-header">
+        <h2>Recibe tu diagnóstico</h2>
+        <p>Analizamos tu caso y te damos claridad</p>
+      </div>
+
+      <div class="form-group">
+        <input type="text" name="nombre" placeholder="Nombre">
+        <input type="tel" name="telefono" placeholder="Teléfono">
+        <input type="email" name="email" placeholder="Email" required>
+      </div>
+
+      <label class="checkbox-legal">
+        <input type="checkbox" required>
+        <span>Acepto la política de privacidad</span>
+      </label>
+
+      <button type="submit" class="btn-primary">
+        Ver qué está fallando
+      </button>
+    </div>
+
+    </form>
+
+  </div>
+</section>
+
+<!-- FOOTER (igual que index) -->
+<footer class="footer">
+  <div class="container">
+    <small>
+      &copy; 2026 Go-Is · Arquitectura Operativa
+      · <a href="#">LinkedIn</a>
+      · <a href="#">Web</a>
+      · <a href="#">Política de Privacidad</a>
+    </small>
+  </div>
+</footer>
+
+</body>
+</html>
+<script>
+document.getElementById("lead-form").addEventListener("submit", async function(e) {
+  e.preventDefault();
+
+  const data = {
+    nombre: document.querySelector('[name="nombre"]').value,
+    telefono: document.querySelector('[name="telefono"]').value,
+    email: document.querySelector('[name="email"]').value
+  };
+
+  const res = await fetch("/api/send-email", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
+  });
+
+  if (res.ok) {
+    alert("Enviado correctamente");
+  } else {
+    alert("Error al enviar");
+  }
+});
+</script>

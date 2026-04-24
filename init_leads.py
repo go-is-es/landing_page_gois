@@ -24,6 +24,7 @@ import pandas as pd
 from bs4 import BeautifulSoup
 import tldextract
 from dotenv import load_dotenv
+from datetime import datetime
 
 # -----------------------------
 # Configuración
@@ -31,23 +32,32 @@ from dotenv import load_dotenv
 load_dotenv()
 API_KEY = os.getenv("GOOGLE_PLACES_API_KEY", "").strip()
 
-# ⚙️ Nueva lista de keywords (zona sur y sectores concretos)
 QUERIES = [
-    "empresa servicios industriales Móstoles",
-    "empresa de mantenimiento Fuenlabrada",
-    "asesoría empresas Leganés",
-    "servicios logísticos Getafe",
-    "empresa de instalaciones Alcorcón",
+    # INMOBILIARIA
+    "inmobiliaria alquiler Valencia",
+    "inmobiliaria alquiler Alicante",
+    "inmobiliaria alquiler Castellón",
+
+    # RRHH
+    "consultora recursos humanos Valencia",
+    "empresa selección personal Alicante",
+    "consultoría RRHH Castellón",
+
+    # SEGUROS (filtrado PYME)
+    "correduría seguros Valencia",
+    "corredor seguros Alicante",
+    "corredor seguros Castellón",
 ]
+
 
 # ⚙️ Nuevo límite por query (para controlar coste y tiempo)
 LIMIT_RESULTS = 20  # puedes subir a 30 si lo necesitas
 
 # Máximo de resultados por query (Places devuelve 20 por página; con paginación)
-MAX_RESULTS_PER_QUERY = 100
+MAX_RESULTS_PER_QUERY = 40
 
 # Timeout y headers para scraping web
-REQ_TIMEOUT = 12
+REQ_TIMEOUT = 5
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (compatible; GO-IS-lead-scraper/1.0; +https://landing-leads.go-is.es/)"
 }
@@ -60,6 +70,23 @@ PERSONAL_DOMAINS = {
 
 # Patrón email básico y robusto
 EMAIL_REGEX = re.compile(r"[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}", re.IGNORECASE)
+
+ROLE_PATTERNS = [
+    "ceo",
+    "founder",
+    "cofounder",
+    "fundador",
+    "cofundador",
+    "director general",
+    "managing director",
+    "director comercial",
+    "responsable comercial",
+    "head of sales",
+    "sales director",
+    "director de operaciones",
+    "operations manager",
+    "head of operations",
+]
 
 # Logging
 logging.basicConfig(
@@ -93,7 +120,7 @@ def clean_phone(phone: str) -> str:
         return ""
     return re.sub(r"[^\d+]", "", phone)
 
-def polite_sleep(a=0.7, b=1.6):
+def polite_sleep(a=0.2, b=0.3):
     time.sleep(random.uniform(a, b))
 
 def fetch_url(url: str) -> str:
@@ -119,15 +146,83 @@ def extract_emails_from_html(html: str) -> set:
         emails.add(match.strip())
     return emails
 
+def extract_responsable_from_text(text: str) -> tuple:
+    """
+    Intenta detectar un nombre y cargo en texto público.
+    Devuelve: (nombre, cargo)
+    """
+    if not text:
+        return "", ""
+
+    text = re.sub(r"\s+", " ", text).strip()
+
+    patterns = [
+        r"([A-ZÁÉÍÓÚÑ][a-záéíóúñ]+(?:\s+[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+){1,3})\s*[,|\-|–]\s*(CEO|Founder|Cofounder|Fundador|Cofundador|Director General|Managing Director|Director Comercial|Responsable Comercial|Head of Sales|Sales Director|Director de Operaciones|Operations Manager|Head of Operations)",
+        r"(CEO|Founder|Cofounder|Fundador|Cofundador|Director General|Managing Director|Director Comercial|Responsable Comercial|Head of Sales|Sales Director|Director de Operaciones|Operations Manager|Head of Operations)\s*[:\-]?\s*([A-ZÁÉÍÓÚÑ][a-záéíóúñ]+(?:\s+[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+){1,3})",
+    ]
+
+    for pattern in patterns:
+        m = re.search(pattern, text, re.IGNORECASE)
+        if m:
+            g1, g2 = m.group(1).strip(), m.group(2).strip()
+
+            if any(role.lower() in g1.lower() for role in ROLE_PATTERNS):
+                cargo = g1
+                nombre = g2
+            else:
+                nombre = g1
+                cargo = g2
+
+            # 🔥 FILTROS DE CALIDAD (AQUÍ)
+            if len(nombre.split()) < 2:
+                return "", ""
+
+            if any(word in nombre.lower() for word in ["grupo", "consultores", "empresa"]):
+                return "", ""
+
+            return nombre, cargo
+
+    return "", ""
+
 def find_candidate_pages(base_url: str) -> list:
-    # Devuelve home + rutas comunes de contacto
-    paths = ["", "contact", "contacto", "contact-us", "sobre-nosotros", "aviso-legal", "legal", "privacy", "privacidad"]
+    # Devuelve home + rutas donde suele aparecer equipo o dirección
+    paths = [
+        "",
+        "contacto",
+        "contact",
+        "sobre-nosotros",
+        "nosotros",
+        "equipo",
+        "team",
+        "about",
+        "quienes-somos",
+    ]
     unique_urls = []
     for p in paths:
         u = urljoin(base_url if base_url.endswith("/") else base_url + "/", p)
         if u not in unique_urls:
             unique_urls.append(u)
-    return unique_urls[:5]  # límite de seguridad
+    return unique_urls[:5]
+
+def extract_responsable_from_website(base_url: str) -> tuple:
+    """
+    Recorre páginas públicas de la web y devuelve:
+    (nombre, cargo, fuente_url)
+    """
+    for page_url in find_candidate_pages(base_url):
+        polite_sleep(0.2, 0.5)
+        html = fetch_url(page_url)
+        if not html:
+            continue
+
+        soup = BeautifulSoup(html, "html.parser")
+        text = soup.get_text(separator=" ", strip=True) if soup else ""
+        nombre, cargo = extract_responsable_from_text(text)
+
+        if nombre and cargo:
+            return nombre, cargo, page_url
+
+    return "", "", ""
 
 def normalize_website(url: str) -> str:
     if not url:
@@ -142,20 +237,19 @@ def normalize_website(url: str) -> str:
 
 def score_lead(row: dict) -> float:
     score = 0.0
-    # +0.3 si hay web
+
     if row.get("web"):
-        score += 0.3
-    # +0.3 si hay email corporativo
+        score += 0.25
+
     if classify_email(row.get("email", "")) == "corporativo":
-        score += 0.3
-    # +0.2 si hay teléfono
+        score += 0.25
+
     if row.get("telefono"):
-        score += 0.2
-    # +0.2 si tiene ciudad/categoría
-    if row.get("ciudad"):
-        score += 0.1
-    if row.get("categoria"):
-        score += 0.1
+        score += 0.25
+
+    if row.get("responsable_nombre"):
+        score += 0.25
+
     return round(min(score, 1.0), 2)
 
 # -----------------------------
@@ -227,12 +321,17 @@ def main():
         logging.info("   → %d candidatos encontrados", len(items))
 
         for it in items:
+            reviews = it.get("user_ratings_total", 0)
+            if reviews < 5:
+                continue
+
             place_id = it.get("place_id")
             if not place_id or place_id in seen_places:
                 continue
             seen_places.add(place_id)
 
             polite_sleep()
+
             details = place_details(place_id, API_KEY)
             if not details:
                 continue
@@ -242,46 +341,58 @@ def main():
             phone = clean_phone(details.get("formatted_phone_number", ""))
             website_raw = details.get("website", "")
             website = normalize_website(website_raw) if website_raw else ""
+            if not website:
+                continue
 
             city = address_component(details, "locality") or address_component(details, "postal_town")
             admin_area = address_component(details, "administrative_area_level_2")
             country = address_component(details, "country")
             types = details.get("types", [])
+            if not any(t in types for t in ["point_of_interest", "establishment"]):
+                continue
             categoria = ", ".join(types) if types else ""
 
             # Extraer emails desde la web (si existe)
             email_found = ""
             email_tipo = "no_encontrado"
             fuente = "google_places"
+            responsable_nombre = ""
+            responsable_cargo = ""
+            responsable_fuente = ""
 
             if website:
                 # Evita duplicar por dominio
-                domain = tldextract.extract(website).registered_domain
+                domain = tldextract.extract(website).top_domain_under_public_suffix
                 if domain and domain in seen_domains:
                     pass
                 else:
                     if domain:
                         seen_domains.add(domain)
+
+                    # 1) Buscar posible responsable en la web pública
+                    responsable_nombre, responsable_cargo, responsable_fuente = extract_responsable_from_website(website)
+
+                    # 2) Buscar emails públicos
                     emails = set()
                     for page_url in find_candidate_pages(website):
-                        polite_sleep(0.6, 1.0)
+                        polite_sleep(0.2, 0.5)
                         html = fetch_url(page_url)
                         if not html:
                             continue
+
                         soup = BeautifulSoup(html, "html.parser")
-                        # Texto visible
                         text = soup.get_text(separator=" ", strip=True) if soup else ""
                         found = extract_emails_from_html(html) | extract_emails_from_html(text)
                         emails |= found
+
                         if emails:
-                            # si encontramos alguno corporativo, detenemos
                             corp_emails = [e for e in emails if is_corporate_email(e)]
                             if corp_emails:
                                 emails = set(corp_emails)
                                 break
-                    # Selecciona uno
+
+                    # Selecciona un email
                     if emails:
-                        # Prioriza info@, contacto@, comercial@
                         priority = ["info@", "contact", "contacto", "comercial", "ventas", "admin@"]
                         chosen = None
                         for p in priority:
@@ -291,6 +402,7 @@ def main():
                                     break
                             if chosen:
                                 break
+
                         email_found = chosen or sorted(emails)[0]
                         email_tipo = classify_email(email_found)
 
@@ -304,8 +416,9 @@ def main():
                 "ciudad": city,
                 "provincia": admin_area,
                 "pais": country,
-                "categoria": categoria,
-                "fuente": fuente,
+                "responsable_nombre": responsable_nombre,
+                "responsable_cargo": responsable_cargo,
+                "responsable_fuente": responsable_fuente,
                 "query": q,
                 "fecha_extraccion": pd.Timestamp.utcnow().strftime("%Y-%m-%d"),
             }
@@ -322,11 +435,14 @@ def main():
     df.sort_values(["score_inicial", "email_tipo"], ascending=[False, True], inplace=True)
     df.drop_duplicates(subset=["empresa", "web"], inplace=True)
 
-    # Filtro: mantener emails corporativos o vacíos (para que puedas buscar luego)
-    # (si quieres solo corporativos, descomenta la línea siguiente)
-    # df = df[(df["email_tipo"] == "corporativo") | (df["email"] == "")]
+    # 🔥 FILTRO DE CALIDAD
+    df = df[df["score_inicial"] >= 0.5]
 
-    out_file = "leads_locales.xlsx"
+    
+    # Poner la fecha al fichero a descargar
+    fecha = datetime.now().strftime("%d%m%Y")
+    out_file = f"leads_locales_{fecha}.xlsx"
+    
     df.to_excel(out_file, index=False)
     logging.info("✅ Exportado: %s (filas: %d)", out_file, len(df))
 
