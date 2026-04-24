@@ -33,14 +33,28 @@ load_dotenv()
 API_KEY = os.getenv("GOOGLE_PLACES_API_KEY", "").strip()
 
 QUERIES = [
-    "asesoría fiscal Valencia"
+    # INMOBILIARIA
+    "inmobiliaria alquiler Valencia",
+    "inmobiliaria alquiler Alicante",
+    "inmobiliaria alquiler Castellón",
+
+    # RRHH
+    "consultora recursos humanos Valencia",
+    "empresa selección personal Alicante",
+    "consultoría RRHH Castellón",
+
+    # SEGUROS (filtrado PYME)
+    "correduría seguros Valencia",
+    "corredor seguros Alicante",
+    "corredor seguros Castellón",
 ]
 
+
 # ⚙️ Nuevo límite por query (para controlar coste y tiempo)
-LIMIT_RESULTS = 10  # puedes subir a 30 si lo necesitas
+LIMIT_RESULTS = 20  # puedes subir a 30 si lo necesitas
 
 # Máximo de resultados por query (Places devuelve 20 por página; con paginación)
-MAX_RESULTS_PER_QUERY = 20
+MAX_RESULTS_PER_QUERY = 40
 
 # Timeout y headers para scraping web
 REQ_TIMEOUT = 5
@@ -106,7 +120,7 @@ def clean_phone(phone: str) -> str:
         return ""
     return re.sub(r"[^\d+]", "", phone)
 
-def polite_sleep(a=0.2, b=0.5):
+def polite_sleep(a=0.2, b=0.3):
     time.sleep(random.uniform(a, b))
 
 def fetch_url(url: str) -> str:
@@ -262,7 +276,7 @@ def places_text_search(query: str, api_key: str):
         results.extend(data.get("results", []))
         next_token = data.get("next_page_token")
         page_count += 1
-        if not next_token or len(results) >= MAX_RESULTS_PER_QUERY or page_count >= 2:
+        if not next_token or len(results) >= MAX_RESULTS_PER_QUERY or page_count >= 3:
             break
         # Next page necesita esperar unos segundos
         polite_sleep(2.2, 3.1)
